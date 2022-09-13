@@ -38,14 +38,13 @@ export default function EntryModal({ entry, type, user }) {
    const [description, setDescription] = useState(entry.description);
    const [category, setCategory] = React.useState(entry.category);
    const [edit, setEdit] = useState(false);
-   const [text, setText] = useState('');
    const [imageUrl, setImageUrl] = useState(''); // QR code state variable
    const [showQR, setShowQR] = useState(false); // QR code state variable
 
    
    const generateQrCode = async () => {
       try {
-         const response = await QRCode.toDataURL(text);
+         const response = await QRCode.toDataURL(link);
          setImageUrl(response);
       }catch (error) {
          console.log(error);
@@ -118,15 +117,12 @@ export default function EntryModal({ entry, type, user }) {
 
    // TODO: QR Code Handler
    const handleQR = () => {
-      setText(entry.link)
-      console.log(entry.link)
       generateQrCode();
       setShowQR(true);
    }
 
    const twoCalls = (e) => {
       setLink(e); 
-      setText(e);
       generateQrCode();
    }
 
@@ -168,7 +164,7 @@ export default function EntryModal({ entry, type, user }) {
             : null;
    
    let qrimage;
-   if (!imageUrl) {
+   if (!link) {
       qrimage = <p>Type in link to generate a QR code.</p>
    } else {
       qrimage = <img 
